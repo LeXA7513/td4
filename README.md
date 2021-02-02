@@ -34,7 +34,7 @@ navigateur intégré)
 
 1/Ajouter un paramètre simple
 
-Dans le fichier main ajouter une nouvelle fonction
+Dans le fichier server ajouter une nouvelle fonction
 
 ```python
 from bottle import template
