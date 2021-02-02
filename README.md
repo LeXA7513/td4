@@ -65,6 +65,9 @@ def afficher_formulaire():
 2.b/ traiter les données soumises
 
 ```python
+
+from bottle import request
+
 @app.post("/formulaire")
 def traiter_formulaire():
     valeur = request.forms.get("parametre1")
