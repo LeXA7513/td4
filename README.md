@@ -39,7 +39,7 @@ Dans le fichier server ajouter une nouvelle fonction
 ```python
 from bottle import template
 
-@app.route('/hello/<name>')
+@app.route('/hello/<name>') #Ici on passe le parametre `name` dans l'url
 def greet(name='Stranger'):
     return template('Hello {{name}}, how are you?', name=name)
 
@@ -77,12 +77,12 @@ def traiter_formulaire():
 
 
 3/créer un formulaire en s'inspirant du point 2 pour saisir dans le champ une
-liste de chiffres afficher le résultat.
+liste de chiffres afficher la somme des chiffres saisis.
 
 - Faire une saisie sur un champ, les chiffres sont à séparer par des ';'
 - convertir la chaine en liste avec la fonction split()
-  `ex : '1,2'.split(',') == ['1', '2'] == True`
-- convertir la liste en flottants
+  ex `'1,2'.split(',')` vaut `['1', '2']`
+- convertir la liste en liste de flottants
 - effectuer et renvoyer le calcul
 
 Pour sauter une ligne utiliser la balise `<br/>` exemple()
