@@ -99,33 +99,110 @@ statistique on souhaite utiliser.
 
 Tester votre application en ajoutant le code suivant dans un fichier test_site.py
 
-```
-from webtest import TestApp
+``` python
+from webtest import TestApp as make_app
 from server import app
 
-testapp = TestApp(app)
+app.catchall = False
 
+testapp = make_app(app)
 
 def test_1():
     index = testapp.get("/")
     assert "Bonjour" in index.ubody
 
 
-def test_formulaire():
-    formulaire = testapp.get("/formulaire")
-    formulaire.form["parametre1"] = "32"
-    res = formulaire.form.submit()
-    assert True  # A remplacer et completer
+def test_double():
+    formulaire = testapp.get("/doubler")
+    form = formulaire.form
+    form["valeur"] = "32"
+    res = form.submit()
+    assert "64" in res.ubody  
+```
+
+Ajouter dans server.py
+
+``` python
+
+@app.get("/doubler")
+def calcul():
+    return """
+     <form action="/doubler" method="post">
+            valeur <input name="valeur" type="text" />
+        <input value="Ajouter" type="submit" />
+        </form>
+    """
+
+
+@app.post("/doubler")
+def doubler_valeur():
+    data = request.forms
+    valeur = int(data.get("valeur"))
+    double = valeur * 2
+    res = {"valeur": valeur, "double": double}
+    return template("{{valeur}} * 2 = <br/> {{double}}", valeur=valeur, double=double)
+
 
 ```
 lancer les tests avec la commande `pytest -s .`
 en cas de doute à une ligne vous pouvez utiliser `import ipdb; ipdb.set_trace()`.
 
 Cela vous ouvrira le debugger dans le même contexte que celui ou le code s'execute,
-une fois terminé appuyez sur c ou q puis entrée pour respectivement continuer ou quitter.
+les principales commandes sont : 
+    - n pour passer a la ligne suivante
+    - c pour continuer
+    - q pour quitter
+    - liste le code
 
 
-6/Ajouter le cas ou vous souhaitez effectuer tous les calculs.
+
+
+6/ Étoffer vos tests utilisation de json
+
+Plutot que de renvoyer une page et remplir des formulaires
+ on aimerai pouvoir manipuler des objets qui ressemblent 
+ un peu plus a des dictionnaires.
+
+
+```python 
+@app.post('/doubler.json')
+def doubler_valeur_json():
+    data = request.json 
+    valeur = int(data.get("valeur"))
+    res = {'double': valeur*2}
+    return res
+
+```
+
+```python
+def test_double_json():
+    reponse = testapp.post_json("/doubler.json", {"valeur": 43} )
+
+    assert reponse.json["double"] == 86
+```
+
+7/ Fusionner les deux approches et adapter le contenu en fonction inspirez vous de l'exemple suivant
+
+``` python
+app.post("/???")
+def traiter():
+   
+    is_json = request.content_type == "application/json"
+    data = request.json if is_json else request.forms
+
+    #vos caluls ici
+
+    res = {} # a remplir
+    
+    if is_json:
+        return res
+    else:
+        return template("{{clef_xx}} = {{clef_yy}}", **res)
+
+
+```
+
+8/ Ajouter le cas ou vous souhaitez effectuer tous les calculs.
 
 Un exemple minimal:
 
@@ -135,15 +212,15 @@ def demo_template():
     items = list(zip("abc", "123"))
     tmpl = """
     <ul>
-  % for key, value in items:
-    <li>{{key}}: {{ value }}</li>
-  % end
+     % for key, value in items:
+        <li>{{key}}: {{ value }}</li>
+    % end
     </ul>
     """
     return template(tmpl, items=items)
 
- Attention: ne cherchez pas a faire le calcul a l'interieur du gabarit.
- pour pouvoir utilier % et boucler il faut que tous les autres caracteres preceent soient des espaces.
-
+Attention: ne cherchez pas a faire le calcul a l´interieur du gabarit. 
+ pour pouvoir utilier % et boucler il faut que tous les autres caracteres précedents 
+ soient des espaces.
 
 
