@@ -85,13 +85,13 @@ liste de chiffres afficher la somme des chiffres saisis.
 - convertir la liste en liste de flottants
 - effectuer et renvoyer le calcul
 
-Pour sauter une ligne utiliser la balise `<br/>` exemple()
+Pour sauter une ligne utiliser la balise `<br/>`
 
 
 4/ ajouter un second champ qui permet de choisir quelle fonction
 statistique on souhaite utiliser.
 
-- creer un dictionnaire qui contient `{'nomdela fonction': fonctio_definie_ou_importee}`
+- creer un dictionnaire qui contient `{'nomdela fonction': fonction_definie_ou_importee}`
 
 
 
@@ -117,7 +117,7 @@ def test_double():
     form = formulaire.form
     form["valeur"] = "32"
     res = form.submit()
-    assert "64" in res.ubody  
+    assert "64" in res.ubody
 ```
 
 Ajouter dans server.py
@@ -148,7 +148,7 @@ lancer les tests avec la commande `pytest -s .`
 en cas de doute à une ligne vous pouvez utiliser `import ipdb; ipdb.set_trace()`.
 
 Cela vous ouvrira le debugger dans le même contexte que celui ou le code s'execute,
-les principales commandes sont : 
+les principales commandes sont :
     - n pour passer a la ligne suivante
     - c pour continuer
     - q pour quitter
@@ -160,14 +160,14 @@ les principales commandes sont :
 6/ Étoffer vos tests utilisation de json
 
 Plutot que de renvoyer une page et remplir des formulaires
- on aimerai pouvoir manipuler des objets qui ressemblent 
+ on aimerai pouvoir manipuler des objets qui ressemblent
  un peu plus a des dictionnaires.
 
 
-```python 
+```python
 @app.post('/doubler.json')
 def doubler_valeur_json():
-    data = request.json 
+    data = request.json
     valeur = int(data.get("valeur"))
     res = {'double': valeur*2}
     return res
@@ -186,14 +186,14 @@ def test_double_json():
 ``` python
 app.post("/???")
 def traiter():
-   
+
     is_json = request.content_type == "application/json"
     data = request.json if is_json else request.forms
 
-    #vos caluls ici
+    #vos calculs ici
 
     res = {} # a remplir
-    
+
     if is_json:
         return res
     else:
@@ -219,8 +219,8 @@ def demo_template():
     """
     return template(tmpl, items=items)
 
-Attention: ne cherchez pas a faire le calcul a l´interieur du gabarit. 
- pour pouvoir utilier % et boucler il faut que tous les autres caracteres précedents 
+Attention: ne cherchez pas a faire le calcul a l´interieur du gabarit.
+ pour pouvoir utilier % et boucler il faut que tous les autres caracteres précedents
  soient des espaces.
 
 
